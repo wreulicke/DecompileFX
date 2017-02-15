@@ -14,8 +14,8 @@ public class ArchiveDecompiler implements FileDecompiler {
   public final class InfomationEmitListener implements DecompilationListener {
     @Override
     public void fileDecompiled(List<String> sourceClassPaths, String outputPath) {
-      sourceClassPaths.forEach((p) -> {
-        System.out.println(String.format("decompiled:%s output:%s", p, outputPath));
+      sourceClassPaths.forEach((path) -> {
+        System.out.println(String.format("decompiled:%s output:%s", path, outputPath));
       });
     }
 
@@ -24,8 +24,8 @@ public class ArchiveDecompiler implements FileDecompiler {
 
     @Override
     public void decompilationFailed(List<String> sourceClassPaths, String message) {
-      sourceClassPaths.forEach((p) -> {
-        System.out.println(String.format("failed decompile:%s message:%s", p, message));
+      sourceClassPaths.forEach((path) -> {
+        System.out.println(String.format("failed decompile:%s message:%s", path, message));
       });
 
     }

@@ -25,12 +25,12 @@ public class Decompiler {
       return;
     }
     Stream<FileDecompiler> decompilers = StreamSupport.stream(decompilerInstances.spliterator(), false);
-    Optional<FileDecompiler> decompiler = decompilers.filter((d) -> d.isSupportedFile(path))
+    Optional<FileDecompiler> foundDecompiler = decompilers.filter((decompiler) -> decompiler.isSupportedFile(path))
       .findFirst();
-    decompiler.ifPresent((d) -> {
-      d.decompile(path);
+    foundDecompiler.ifPresent((decompiler) -> {
+      decompiler.decompile(path);
     });
-    boolean notFound = !decompiler.isPresent();
+    boolean notFound = !foundDecompiler.isPresent();
     if (notFound) {
       System.out.println("This file is unsupported.");
     }
