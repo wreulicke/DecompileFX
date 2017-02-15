@@ -2,6 +2,12 @@
 
 This is JavaFX Application for decompilation.
 
+# Installation
+
+Followings:
+* clone and build
+* download github releases.
+
 # Usage
 
 1. execute DecompileFX.exe
