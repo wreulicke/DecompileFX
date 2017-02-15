@@ -1,4 +1,4 @@
-# decompiler-javafx-application
+# DecompileFX
 
 This is JavaFX Application for decompilation.
 
