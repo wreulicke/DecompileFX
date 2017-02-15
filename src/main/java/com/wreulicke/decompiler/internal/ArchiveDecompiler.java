@@ -1,40 +1,23 @@
 package com.wreulicke.decompiler.internal;
 
 import java.nio.file.Path;
-import java.util.List;
 
-import org.jboss.windup.decompiler.api.DecompilationListener;
 import org.jboss.windup.decompiler.procyon.ProcyonDecompiler;
 
 import com.google.common.io.Files;
+import com.wreulicke.decompiler.DecompilationException;
 import com.wreulicke.decompiler.FileDecompiler;
 
 public class ArchiveDecompiler implements FileDecompiler {
 
-  public final class InfomationEmitListener implements DecompilationListener {
-    @Override
-    public void fileDecompiled(List<String> sourceClassPaths, String outputPath) {
-      sourceClassPaths.forEach((path) -> {
-        System.out.println(String.format("decompiled:%s output:%s", path, outputPath));
-      });
-    }
-
-    @Override
-    public void decompilationProcessComplete() {}
-
-    @Override
-    public void decompilationFailed(List<String> sourceClassPaths, String message) {
-      sourceClassPaths.forEach((path) -> {
-        System.out.println(String.format("failed decompile:%s message:%s", path, message));
-      });
-
-    }
-  }
-
   @Override
   public boolean isSupportedFile(Path path) {
-    String extension = Files.getFileExtension(path.getFileName()
-      .toString());
+    Path refPath = path.getFileName();
+    if (refPath == null) {
+      return false;
+    }
+    String fileName = refPath.toString();
+    String extension = Files.getFileExtension(fileName);
     switch (extension) {
       case "jar":
         return true;
@@ -44,10 +27,14 @@ public class ArchiveDecompiler implements FileDecompiler {
   }
 
   @Override
-  public void decompile(Path path) {
+  public void decompile(Path path) throws DecompilationException {
     ProcyonDecompiler decompiler = new ProcyonDecompiler();
-    decompiler.decompileArchive(path, path.getParent()
-      .resolve("decompiled"), new InfomationEmitListener());
+    Path parent = path.getParent();
+    if (parent == null) {
+      throw new DecompilationException(String.format("cannot find parent directory:%s", path.toString()));
+    }
+    Path outputDir = parent.resolve("decompiled");
+    decompiler.decompileArchive(path, outputDir, new InfomationEmitListener());
   }
 
 }

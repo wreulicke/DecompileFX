@@ -28,7 +28,11 @@ public class Decompiler {
     Optional<FileDecompiler> foundDecompiler = decompilers.filter((decompiler) -> decompiler.isSupportedFile(path))
       .findFirst();
     foundDecompiler.ifPresent((decompiler) -> {
-      decompiler.decompile(path);
+      try {
+        decompiler.decompile(path);
+      } catch (DecompilationException ex) {
+        System.out.println(ex.getMessage());
+      }
     });
     boolean notFound = !foundDecompiler.isPresent();
     if (notFound) {

@@ -5,14 +5,19 @@ import java.nio.file.Path;
 import org.jboss.windup.decompiler.procyon.ProcyonDecompiler;
 
 import com.google.common.io.Files;
+import com.wreulicke.decompiler.DecompilationException;
 import com.wreulicke.decompiler.FileDecompiler;
 
 public class ClassDecompiler implements FileDecompiler {
 
   @Override
   public boolean isSupportedFile(Path path) {
-    String extension = Files.getFileExtension(path.getFileName()
-      .toString());
+    Path refPath = path.getFileName();
+    if (refPath == null) {
+      return false;
+    }
+    String fileName = refPath.toString();
+    String extension = Files.getFileExtension(fileName);
     switch (extension) {
       case "class":
         return true;
@@ -22,10 +27,14 @@ public class ClassDecompiler implements FileDecompiler {
   }
 
   @Override
-  public void decompile(Path path) {
+  public void decompile(Path path) throws DecompilationException {
     ProcyonDecompiler decompiler = new ProcyonDecompiler();
-    decompiler.decompileClassFile(path.getParent(), path, path.getParent()
-      .resolve("decompiled"));
+    Path parent = path.getParent();
+    if (parent == null) {
+      throw new DecompilationException(String.format("cannot find parent directory:%s", path.toString()));
+    }
+    Path outputDir = parent.resolve("decompiled");
+    decompiler.decompileClassFile(parent, path, outputDir);
   }
 
 

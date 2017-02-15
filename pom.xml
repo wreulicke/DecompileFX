@@ -5,6 +5,10 @@
 	<artifactId>DecompileFX</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<reporting>
 		<plugins>
 			<plugin>
@@ -30,6 +34,16 @@
 						</reports>
 					</reportSet>
 				</reportSets>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.7</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.4</version>
 			</plugin>
 		</plugins>
 	</reporting>
@@ -61,12 +75,45 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.4</version>
+				<configuration>
+					<effort>Max</effort>
+					<xmlOutput>true</xmlOutput>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.7</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>pmd</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>2.17</version>
 				<configuration>
 					<configLocation>checkstyle.xml</configLocation>
-					<encoding>UTF-8</encoding>
+					<encoding>${project.build.sourceEncoding}</encoding>
 					<consoleOutput>true</consoleOutput>
 					<failsOnError>false</failsOnError>
 					<failOnViolation>false</failOnViolation>
@@ -114,6 +161,7 @@
 							<goal>check</goal>
 						</goals>
 						<configuration>
+							<haltOnFailure>false</haltOnFailure>
 							<rules>
 								<!-- implementation is needed only for Maven 2 -->
 								<rule implementation="org.jacoco.maven.RuleConfiguration">
@@ -140,6 +188,7 @@
 					<!-- http://maven.apache.org/plugins/maven-compiler-plugin/ -->
 					<source>1.8</source>
 					<target>1.8</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
 			<plugin><!-- https://mvnrepository.com/artifact/net.revelc.code.formatter/formatter-maven-plugin -->
@@ -149,7 +198,7 @@
 				<configuration>
 					<configFile>${project.basedir}/eclipse-format-setting.xml</configFile>
 					<lineEnding>LF</lineEnding>
-					<encoding>UTF-8</encoding>
+					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 				<executions>
 					<execution>
