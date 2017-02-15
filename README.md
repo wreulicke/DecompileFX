@@ -6,7 +6,7 @@ This is JavaFX Application for decompilation.
 
 Followings:
 * clone and build
-* download github releases.
+* [download github releases.](https://github.com/Wreulicke/decompiler-javafx-application/releases)
 
 # Usage
 
