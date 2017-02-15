@@ -11,6 +11,26 @@ import com.wreulicke.decompiler.FileDecompiler;
 
 public class ArchiveDecompiler implements FileDecompiler {
 
+  public final class InfomationEmitListener implements DecompilationListener {
+    @Override
+    public void fileDecompiled(List<String> sourceClassPaths, String outputPath) {
+      sourceClassPaths.forEach((p) -> {
+        System.out.println(String.format("decompiled:%s output:%s", p, outputPath));
+      });
+    }
+
+    @Override
+    public void decompilationProcessComplete() {}
+
+    @Override
+    public void decompilationFailed(List<String> sourceClassPaths, String message) {
+      sourceClassPaths.forEach((p) -> {
+        System.out.println(String.format("failed decompile:%s message:%s", p, message));
+      });
+
+    }
+  }
+
   @Override
   public boolean isSupportedFile(Path path) {
     String extension = Files.getFileExtension(path.getFileName()
@@ -27,26 +47,7 @@ public class ArchiveDecompiler implements FileDecompiler {
   public void decompile(Path path) {
     ProcyonDecompiler decompiler = new ProcyonDecompiler();
     decompiler.decompileArchive(path, path.getParent()
-      .resolve("decompiled"), new DecompilationListener() {
-
-        @Override
-        public void fileDecompiled(List<String> sourceClassPaths, String outputPath) {
-          sourceClassPaths.forEach((p) -> {
-            System.out.println(String.format("decompiled:%s output:%s", p, outputPath));
-          });
-        }
-
-        @Override
-        public void decompilationProcessComplete() {}
-
-        @Override
-        public void decompilationFailed(List<String> sourceClassPaths, String message) {
-          sourceClassPaths.forEach((p) -> {
-            System.out.println(String.format("failed decompile:%s message:%s", p, message));
-          });
-
-        }
-      });
+      .resolve("decompiled"), new InfomationEmitListener());
   }
 
 }

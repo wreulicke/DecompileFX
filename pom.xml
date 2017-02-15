@@ -4,6 +4,24 @@
 	<groupId>com.wreulicke</groupId>
 	<artifactId>DecompileFX</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jboss.windup.decompiler</groupId>
+			<artifactId>decompiler-procyon</artifactId>
+			<version>2.7.0.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.windup.decompiler</groupId>
+			<artifactId>decompiler-fernflower</artifactId>
+			<version>2.7.0.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.weld.se</groupId>
+			<artifactId>weld-se</artifactId>
+			<version>2.1.2.Final</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
@@ -15,6 +33,23 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
+			</plugin>
+			<plugin><!-- https://mvnrepository.com/artifact/net.revelc.code.formatter/formatter-maven-plugin -->
+				<groupId>net.revelc.code.formatter</groupId>
+				<artifactId>formatter-maven-plugin</artifactId>
+				<version>2.0.0</version>
+				<configuration>
+					<configFile>${project.basedir}/eclipse-format-setting.xml</configFile>
+					<lineEnding>LF</lineEnding>
+					<encoding>UTF-8</encoding>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>com.zenjava</groupId>
@@ -43,26 +78,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
-
-	<dependencies>
-
-		<dependency>
-			<groupId>org.jboss.windup.decompiler</groupId>
-			<artifactId>decompiler-procyon</artifactId>
-			<version>2.7.0.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.windup.decompiler</groupId>
-			<artifactId>decompiler-fernflower</artifactId>
-			<version>2.7.0.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.weld.se</groupId>
-			<artifactId>weld-se</artifactId>
-			<version>2.1.2.Final</version>
-		</dependency>
-	</dependencies>
 </project>
