@@ -26,7 +26,7 @@ public class DecompilerApplication {
     Scene scene = new Scene(root, 551, 400);
     scene.setOnDragOver(dragHandler);
     scene.setOnDragDropped(dropHandler);
-
+    stage.setTitle("DecompileFX");
     stage.setScene(scene);
     stage.show();
   }
